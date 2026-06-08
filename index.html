@@ -419,11 +419,25 @@
     renderPanel();
   }
 
+  /* ── Security ── */
+  async function hashPassword(password) {
+    const msgUint8 = new TextEncoder().encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
   /* ── Role ── */
-  function setRole(role) {
+  async function setRole(role) {
+    
     if (role === 'prof' && !isProf) {
       const senha = prompt('Digite a senha para acessar o modo Editor:');
-      if (senha !== 'AndreyFofo03!') { alert('Senha incorreta!'); return; }
+      if (!senha) return; // Cancela caso o usuário feche o prompt vazio
+      
+      const inputHash = await hashPassword(senha);
+      // Para máxima segurança, o ideal é substituir o await abaixo pela string do hash gerado!
+      const expectedHash = "1fc53892f070a4f14faf27874dad856ca8dd23ae02bfcdea496b605b8cb295cb"
+      if (inputHash !== expectedHash) { alert('Senha incorreta!'); return; }
     }
     isProf = role === 'prof';
     document.getElementById('roleAluno').classList.toggle('active', !isProf);
