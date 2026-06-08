@@ -815,7 +815,7 @@
     }
     // Agrupa as atividades por data (date_key)
     tasks = {};
-    for (const task of data) {
+    for (const task of (data || [])) {
       const key = task.date_key;
       if (!tasks[key]) {
         tasks[key] = [];
@@ -851,7 +851,7 @@
       const dayTasks = tasks[key] || [];
       if (dayTasks.length) cell.classList.add('has-tasks');
 
-      const dots = dayTasks.slice(0, 6).map(t =>
+      const dots = dayTasks.filter(t => t).slice(0, 6).map(t =>
         `<div class="task-dot" style="background:${TYPE_COLORS[t.type] || TYPE_COLORS.outro}"></div>`
       ).join('');
 
@@ -886,7 +886,7 @@
           Nenhuma atividade neste dia
         </div>`;
     } else {
-      tasksHtml = `<div class="tasks-list">` + dayTasks.map(t => `
+      tasksHtml = `<div class="tasks-list">` + dayTasks.filter(t => t).map(t => `
         <div class="task-item">
           <div class="task-bar" style="background:${TYPE_COLORS[t.type] || TYPE_COLORS.outro}"></div>
           <div class="task-info">
@@ -970,8 +970,9 @@
     }
 
     // Adiciona a nova atividade (com o ID do banco) ao estado local
+    const savedTask = (data && data.length > 0) ? data[0] : { ...newTask, id: Date.now() };
     if (!tasks[key]) tasks[key] = [];
-    tasks[key].push(data[0]);
+    tasks[key].push(savedTask);
 
     closeModal();
     buildCalendar();
