@@ -9,12 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" />
   <style>
-    /* ── Reset & Base ──────────────────────────────────────────── */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --bg-page:        #0f0f13;
@@ -22,19 +17,15 @@
       --bg-card:        #1e1e28;
       --bg-card-hover:  #23232f;
       --bg-input:       #1a1a24;
-
       --border-subtle:  rgba(255,255,255,0.06);
       --border-default: rgba(255,255,255,0.12);
       --border-strong:  rgba(255,255,255,0.22);
-
       --text-primary:   #f0f0f5;
       --text-secondary: #9898a8;
       --text-tertiary:  #55556a;
-
       --accent-blue:    #378ADD;
       --accent-blue-bg: rgba(55,138,221,0.12);
       --accent-blue-border: rgba(55,138,221,0.35);
-
       --red:        #E24B4A;
       --red-bg:     rgba(226,75,74,0.12);
       --amber:      #EF9F27;
@@ -43,614 +34,125 @@
       --green-bg:   rgba(29,158,117,0.12);
       --gray:       #888780;
       --gray-bg:    rgba(136,135,128,0.12);
-
       --radius-sm:  6px;
       --radius-md:  10px;
       --radius-lg:  14px;
       --radius-xl:  18px;
-
       --font-ui:    'Syne', sans-serif;
       --font-mono:  'JetBrains Mono', monospace;
-
       --shadow-card: 0 2px 16px rgba(0,0,0,0.4);
       --shadow-modal: 0 8px 40px rgba(0,0,0,0.7);
     }
 
-    html, body {
-      height: 100%;
-      background: var(--bg-page);
-      color: var(--text-primary);
-      font-family: var(--font-ui);
-      font-size: 15px;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-    }
+    html, body { height: 100%; background: var(--bg-page); color: var(--text-primary); font-family: var(--font-ui); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
 
-    /* ── Layout ─────────────────────────────────────────────────── */
-    .app-wrapper {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem 1rem 4rem;
-    }
+    .app-wrapper { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem 4rem; }
 
-    .app-header {
-      width: 100%;
-      max-width: 720px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 2rem;
-      padding-bottom: 1.25rem;
-      border-bottom: 0.5px solid var(--border-subtle);
-    }
+    .app-header { width: 100%; max-width: 720px; display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 0.5px solid var(--border-subtle); }
 
-    .app-brand {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
+    .app-brand { display: flex; flex-direction: column; gap: 2px; }
+    .app-brand-tag { font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-blue); font-family: var(--font-mono); }
+    .app-brand-name { font-size: 22px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; }
+    .app-brand-name span { color: var(--text-tertiary); font-weight: 400; }
 
-    .app-brand-tag {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent-blue);
-      font-family: var(--font-mono);
-    }
-
-    .app-brand-name {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-    }
-
-    .app-brand-name span {
-      color: var(--text-tertiary);
-      font-weight: 400;
-    }
-
-    /* ── Role Toggle ─────────────────────────────────────────────── */
-    .role-toggle {
-      display: flex;
-      background: var(--bg-card);
-      border: 0.5px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      padding: 3px;
-      gap: 3px;
-    }
-
-    .role-btn {
-      font-family: var(--font-ui);
-      font-size: 12px;
-      font-weight: 500;
-      padding: 5px 14px;
-      border: none;
-      background: transparent;
-      color: var(--text-secondary);
-      cursor: pointer;
-      border-radius: var(--radius-sm);
-      transition: all 0.15s ease;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
+    .role-toggle { display: flex; background: var(--bg-card); border: 0.5px solid var(--border-subtle); border-radius: var(--radius-md); overflow: hidden; padding: 3px; gap: 3px; }
+    .role-btn { font-family: var(--font-ui); font-size: 12px; font-weight: 500; padding: 5px 14px; border: none; background: transparent; color: var(--text-secondary); cursor: pointer; border-radius: var(--radius-sm); transition: all 0.15s ease; display: flex; align-items: center; gap: 5px; }
     .role-btn:hover { color: var(--text-primary); }
+    .role-btn.active { background: var(--accent-blue-bg); color: var(--accent-blue); border: 0.5px solid var(--accent-blue-border); }
 
-    .role-btn.active {
-      background: var(--accent-blue-bg);
-      color: var(--accent-blue);
-      border: 0.5px solid var(--accent-blue-border);
-    }
+    .cal-card { width: 100%; max-width: 720px; background: var(--bg-surface); border: 0.5px solid var(--border-subtle); border-radius: var(--radius-xl); padding: 1.5rem; box-shadow: var(--shadow-card); }
 
-    /* ── Calendar Card ───────────────────────────────────────────── */
-    .cal-card {
-      width: 100%;
-      max-width: 720px;
-      background: var(--bg-surface);
-      border: 0.5px solid var(--border-subtle);
-      border-radius: var(--radius-xl);
-      padding: 1.5rem;
-      box-shadow: var(--shadow-card);
-    }
+    .month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+    .month-label { font-size: 18px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; }
+    .month-arrows { display: flex; gap: 6px; }
+    .nav-btn { width: 32px; height: 32px; background: var(--bg-card); border: 0.5px solid var(--border-default); border-radius: var(--radius-sm); color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.15s ease; }
+    .nav-btn:hover { background: var(--bg-card-hover); border-color: var(--border-strong); color: var(--text-primary); }
 
-    /* ── Month Navigation ────────────────────────────────────────── */
-    .month-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
-    }
+    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 4px; }
+    .weekday { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: var(--text-tertiary); text-align: center; padding: 4px 0; }
 
-    .month-label {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-    }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
 
-    .month-arrows {
-      display: flex;
-      gap: 6px;
-    }
-
-    .nav-btn {
-      width: 32px;
-      height: 32px;
-      background: var(--bg-card);
-      border: 0.5px solid var(--border-default);
-      border-radius: var(--radius-sm);
-      color: var(--text-secondary);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      transition: all 0.15s ease;
-    }
-
-    .nav-btn:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--border-strong);
-      color: var(--text-primary);
-    }
-
-    /* ── Weekday Row ─────────────────────────────────────────────── */
-    .cal-weekdays {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-      margin-bottom: 4px;
-    }
-
-    .weekday {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      color: var(--text-tertiary);
-      text-align: center;
-      padding: 4px 0;
-    }
-
-    /* ── Grid ────────────────────────────────────────────────────── */
-    .cal-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-    }
-
-    .cal-day {
-      min-height: 64px;
-      background: var(--bg-card);
-      border: 0.5px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 6px 7px;
-      cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cal-day::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: var(--radius-md);
-      opacity: 0;
-      transition: opacity 0.15s;
-      background: rgba(255,255,255,0.03);
-    }
-
+    .cal-day { min-height: 64px; background: var(--bg-card); border: 0.5px solid var(--border-subtle); border-radius: var(--radius-md); padding: 6px 7px; cursor: pointer; transition: border-color 0.15s, background 0.15s; position: relative; overflow: hidden; }
+    .cal-day::before { content: ''; position: absolute; inset: 0; border-radius: var(--radius-md); opacity: 0; transition: opacity 0.15s; background: rgba(255,255,255,0.03); }
     .cal-day:hover::before { opacity: 1; }
     .cal-day:hover { border-color: var(--border-default); }
-
-    .cal-day.empty {
-      background: transparent;
-      border-color: transparent;
-      cursor: default;
-    }
+    .cal-day.empty { background: transparent; border-color: transparent; cursor: default; }
     .cal-day.empty::before { display: none; }
+    .cal-day.today { border-color: var(--accent-blue-border); background: var(--accent-blue-bg); }
+    .cal-day.selected { border-color: var(--accent-blue); background: var(--accent-blue-bg); box-shadow: 0 0 0 1px var(--accent-blue-border); }
+    .cal-day.has-tasks { border-color: var(--border-default); }
 
-    .cal-day.today {
-      border-color: var(--accent-blue-border);
-      background: var(--accent-blue-bg);
-    }
+    .day-num { display: block; font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--text-secondary); margin-bottom: 4px; }
+    .cal-day.today .day-num { color: var(--accent-blue); font-weight: 700; }
+    .cal-day.selected .day-num { color: var(--accent-blue); }
 
-    .cal-day.selected {
-      border-color: var(--accent-blue);
-      background: var(--accent-blue-bg);
-      box-shadow: 0 0 0 1px var(--accent-blue-border);
-    }
+    .task-dots { display: flex; flex-wrap: wrap; gap: 3px; }
+    .task-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
-    .cal-day.has-tasks {
-      border-color: var(--border-default);
-    }
+    .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.25rem; padding-top: 1rem; border-top: 0.5px solid var(--border-subtle); }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-secondary); font-family: var(--font-mono); }
+    .legend-dot { width: 7px; height: 7px; border-radius: 50%; }
 
-    .day-num {
-      display: block;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      margin-bottom: 4px;
-    }
+    .day-panel { margin-top: 1.25rem; background: var(--bg-card); border: 0.5px solid var(--border-default); border-radius: var(--radius-lg); padding: 1.25rem; animation: slideUp 0.2s ease; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-    .cal-day.today .day-num {
-      color: var(--accent-blue);
-      font-weight: 700;
-    }
+    .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .panel-date { font-size: 14px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; }
+    .panel-date-sub { font-size: 11px; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 1px; }
 
-    .cal-day.selected .day-num {
-      color: var(--accent-blue);
-    }
-
-    .task-dots {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 3px;
-    }
-
-    .task-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    /* ── Legend ──────────────────────────────────────────────────── */
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 1.25rem;
-      padding-top: 1rem;
-      border-top: 0.5px solid var(--border-subtle);
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 11px;
-      color: var(--text-secondary);
-      font-family: var(--font-mono);
-    }
-
-    .legend-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-    }
-
-    /* ── Day Panel ───────────────────────────────────────────────── */
-    .day-panel {
-      margin-top: 1.25rem;
-      background: var(--bg-card);
-      border: 0.5px solid var(--border-default);
-      border-radius: var(--radius-lg);
-      padding: 1.25rem;
-      animation: slideUp 0.2s ease;
-    }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-    }
-
-    .panel-date {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-primary);
-      letter-spacing: -0.01em;
-    }
-
-    .panel-date-sub {
-      font-size: 11px;
-      color: var(--text-tertiary);
-      font-family: var(--font-mono);
-      margin-top: 1px;
-    }
-
-    /* ── Add Button ──────────────────────────────────────────────── */
-    .add-btn {
-      font-family: var(--font-ui);
-      font-size: 12px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 6px 12px;
-      background: var(--accent-blue-bg);
-      color: var(--accent-blue);
-      border: 0.5px solid var(--accent-blue-border);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: opacity 0.15s;
-    }
-
+    .add-btn { font-family: var(--font-ui); font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 5px; padding: 6px 12px; background: var(--accent-blue-bg); color: var(--accent-blue); border: 0.5px solid var(--accent-blue-border); border-radius: var(--radius-md); cursor: pointer; transition: opacity 0.15s; }
     .add-btn:hover { opacity: 0.75; }
 
-    /* ── Task List ───────────────────────────────────────────────── */
-    .tasks-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+    .tasks-list { display: flex; flex-direction: column; gap: 6px; }
 
-    .task-item {
-      display: flex;
-      align-items: stretch;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: var(--radius-md);
-      border: 0.5px solid var(--border-subtle);
-      background: var(--bg-surface);
-      transition: border-color 0.15s;
-    }
-
+    .task-item { display: flex; align-items: stretch; gap: 10px; padding: 10px 12px; border-radius: var(--radius-md); border: 0.5px solid var(--border-subtle); background: var(--bg-surface); transition: border-color 0.15s; }
     .task-item:hover { border-color: var(--border-default); }
-
-    .task-bar {
-      width: 3px;
-      border-radius: 3px;
-      flex-shrink: 0;
-      align-self: stretch;
-    }
-
+    .task-bar { width: 3px; border-radius: 3px; flex-shrink: 0; align-self: stretch; }
     .task-info { flex: 1; min-width: 0; }
-
-    .task-subject {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-tertiary);
-      margin-bottom: 2px;
-      font-family: var(--font-mono);
-    }
-
-    .task-name {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-primary);
-      margin-bottom: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .task-meta {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .task-badge {
-      font-size: 10px;
-      font-weight: 500;
-      padding: 2px 7px;
-      border-radius: 4px;
-      font-family: var(--font-mono);
-    }
-
+    .task-subject { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 2px; font-family: var(--font-mono); }
+    .task-name { font-size: 13px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .task-meta { display: flex; align-items: center; gap: 6px; }
+    .task-badge { font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 4px; font-family: var(--font-mono); }
     .badge-entrega  { background: var(--red-bg);   color: var(--red);   }
     .badge-prova    { background: var(--amber-bg);  color: var(--amber); }
     .badge-trabalho { background: var(--green-bg);  color: var(--green); }
     .badge-aula     { background: var(--accent-blue-bg); color: var(--accent-blue); }
     .badge-outro    { background: var(--gray-bg);   color: var(--gray);  }
+    .task-time { font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary); display: flex; align-items: center; gap: 3px; }
 
-    .task-time {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-tertiary);
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
+    .delete-btn { background: none; border: none; cursor: pointer; color: var(--text-tertiary); font-size: 14px; padding: 2px 4px; border-radius: var(--radius-sm); display: flex; align-items: center; align-self: center; transition: color 0.15s, background 0.15s; margin-left: auto; }
+    .delete-btn:hover { color: var(--red); background: var(--red-bg); }
 
-    .delete-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--text-tertiary);
-      font-size: 14px;
-      padding: 2px 4px;
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      align-self: center;
-      transition: color 0.15s, background 0.15s;
-      margin-left: auto;
-    }
+    .empty-msg { font-size: 13px; color: var(--text-tertiary); text-align: center; padding: 1.5rem 0; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .empty-msg i { font-size: 22px; opacity: 0.4; }
 
-    .delete-btn:hover {
-      color: var(--red);
-      background: var(--red-bg);
-    }
-
-    .empty-msg {
-      font-size: 13px;
-      color: var(--text-tertiary);
-      text-align: center;
-      padding: 1.5rem 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .empty-msg i {
-      font-size: 22px;
-      opacity: 0.4;
-    }
-
-    /* ── Modal Overlay ───────────────────────────────────────────── */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-    }
-
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; }
     .modal-overlay.open { display: flex; }
+    .modal-card { background: var(--bg-card); border: 0.5px solid var(--border-default); border-radius: var(--radius-xl); padding: 1.5rem; width: 380px; max-width: 94vw; box-shadow: var(--shadow-modal); animation: modalIn 0.2s ease; }
+    @keyframes modalIn { from { opacity: 0; transform: scale(0.96) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .modal-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 8px; }
+    .modal-title i { color: var(--accent-blue); font-size: 18px; }
 
-    .modal-card {
-      background: var(--bg-card);
-      border: 0.5px solid var(--border-default);
-      border-radius: var(--radius-xl);
-      padding: 1.5rem;
-      width: 380px;
-      max-width: 94vw;
-      box-shadow: var(--shadow-modal);
-      animation: modalIn 0.2s ease;
-    }
-
-    @keyframes modalIn {
-      from { opacity: 0; transform: scale(0.96) translateY(8px); }
-      to   { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    .modal-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .modal-title i {
-      color: var(--accent-blue);
-      font-size: 18px;
-    }
-
-    /* ── Form Elements ───────────────────────────────────────────── */
     .form-group { margin-bottom: 12px; }
-
-    .form-label {
-      display: block;
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-tertiary);
-      margin-bottom: 5px;
-      font-family: var(--font-mono);
-    }
-
-    .form-input,
-    .form-select {
-      font-family: var(--font-ui);
-      font-size: 13px;
-      width: 100%;
-      padding: 8px 11px;
-      background: var(--bg-input);
-      border: 0.5px solid var(--border-default);
-      border-radius: var(--radius-md);
-      color: var(--text-primary);
-      transition: border-color 0.15s;
-      outline: none;
-      appearance: none;
-      -webkit-appearance: none;
-    }
-
+    .form-label { display: block; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 5px; font-family: var(--font-mono); }
+    .form-input, .form-select { font-family: var(--font-ui); font-size: 13px; width: 100%; padding: 8px 11px; background: var(--bg-input); border: 0.5px solid var(--border-default); border-radius: var(--radius-md); color: var(--text-primary); transition: border-color 0.15s; outline: none; appearance: none; -webkit-appearance: none; }
     .form-input::placeholder { color: var(--text-tertiary); }
-
-    .form-input:focus,
-    .form-select:focus {
-      border-color: var(--accent-blue);
-      box-shadow: 0 0 0 3px var(--accent-blue-bg);
-    }
-
-    .form-input.error {
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px var(--red-bg);
-    }
-
-    .form-select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-      padding-right: 28px;
-      cursor: pointer;
-    }
-
-    .form-select option {
-      background: var(--bg-card);
-      color: var(--text-primary);
-    }
-
-    .form-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 1.25rem;
-    }
-
-    .btn-cancel {
-      font-family: var(--font-ui);
-      font-size: 13px;
-      font-weight: 500;
-      flex: 1;
-      padding: 9px;
-      background: transparent;
-      color: var(--text-secondary);
-      border: 0.5px solid var(--border-default);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .btn-cancel:hover {
-      border-color: var(--border-strong);
-      color: var(--text-primary);
-    }
-
-    .btn-save {
-      font-family: var(--font-ui);
-      font-size: 13px;
-      font-weight: 700;
-      flex: 1;
-      padding: 9px;
-      background: var(--accent-blue);
-      color: white;
-      border: none;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: opacity 0.15s;
-      letter-spacing: 0.01em;
-    }
-
+    .form-input:focus, .form-select:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px var(--accent-blue-bg); }
+    .form-input.error { border-color: var(--red); box-shadow: 0 0 0 3px var(--red-bg); }
+    .form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px; cursor: pointer; }
+    .form-select option { background: var(--bg-card); color: var(--text-primary); }
+    .form-actions { display: flex; gap: 8px; margin-top: 1.25rem; }
+    .btn-cancel { font-family: var(--font-ui); font-size: 13px; font-weight: 500; flex: 1; padding: 9px; background: transparent; color: var(--text-secondary); border: 0.5px solid var(--border-default); border-radius: var(--radius-md); cursor: pointer; transition: all 0.15s; }
+    .btn-cancel:hover { border-color: var(--border-strong); color: var(--text-primary); }
+    .btn-save { font-family: var(--font-ui); font-size: 13px; font-weight: 700; flex: 1; padding: 9px; background: var(--accent-blue); color: white; border: none; border-radius: var(--radius-md); cursor: pointer; transition: opacity 0.15s; letter-spacing: 0.01em; }
     .btn-save:hover { opacity: 0.85; }
 
-    /* ── Scrollbar ───────────────────────────────────────────────── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb {
-      background: var(--border-default);
-      border-radius: 3px;
-    }
+    ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
 
-    /* ── Responsive ──────────────────────────────────────────────── */
     @media (max-width: 600px) {
       .app-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
       .cal-day { min-height: 48px; padding: 4px 5px; }
@@ -662,7 +164,6 @@
 </head>
 
 <body>
-
 <div class="app-wrapper">
 
   <header class="app-header">
@@ -681,26 +182,17 @@
   </header>
 
   <div class="cal-card">
-
     <div class="month-nav">
       <div class="month-label" id="monthLabel"></div>
       <div class="month-arrows">
-        <button class="nav-btn" onclick="changeMonth(-1)" aria-label="Mês anterior">
-          <i class="bi bi-chevron-left"></i>
-        </button>
-        <button class="nav-btn" onclick="changeMonth(1)" aria-label="Próximo mês">
-          <i class="bi bi-chevron-right"></i>
-        </button>
+        <button class="nav-btn" onclick="changeMonth(-1)"><i class="bi bi-chevron-left"></i></button>
+        <button class="nav-btn" onclick="changeMonth(1)"><i class="bi bi-chevron-right"></i></button>
       </div>
     </div>
 
     <div class="cal-weekdays">
-      <div class="weekday">DOM</div>
-      <div class="weekday">SEG</div>
-      <div class="weekday">TER</div>
-      <div class="weekday">QUA</div>
-      <div class="weekday">QUI</div>
-      <div class="weekday">SEX</div>
+      <div class="weekday">DOM</div><div class="weekday">SEG</div><div class="weekday">TER</div>
+      <div class="weekday">QUA</div><div class="weekday">QUI</div><div class="weekday">SEX</div>
       <div class="weekday">SÁB</div>
     </div>
 
@@ -716,27 +208,20 @@
 
     <div id="dayPanel"></div>
   </div>
-
 </div>
 
-<!-- Modal de adição -->
+<!-- Modal -->
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
   <div class="modal-card">
-    <div class="modal-title">
-      <i class="bi bi-calendar-plus"></i>
-      Adicionar atividade
-    </div>
-
+    <div class="modal-title"><i class="bi bi-calendar-plus"></i> Adicionar atividade</div>
     <div class="form-group">
       <label class="form-label" for="fSubject">Disciplina</label>
       <input class="form-input" id="fSubject" placeholder="ex: Cálculo II, SO, Redes..." />
     </div>
-
     <div class="form-group">
       <label class="form-label" for="fName">Título</label>
       <input class="form-input" id="fName" placeholder="ex: Prova P2, EP3, Entrega Final..." />
     </div>
-
     <div class="form-group">
       <label class="form-label" for="fType">Tipo</label>
       <select class="form-select" id="fType">
@@ -747,12 +232,10 @@
         <option value="outro">Outro</option>
       </select>
     </div>
-
     <div class="form-group">
       <label class="form-label" for="fTime">Horário (opcional)</label>
       <input class="form-input" id="fTime" type="time" />
     </div>
-
     <div class="form-actions">
       <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
       <button class="btn-save" onclick="saveTask()">Salvar</button>
@@ -760,10 +243,18 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- ✅ Import do Supabase como módulo ES -->
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-<script>
-  /* ── State ───────────────────────────────────────────────────── */
+  /* ── Config ── */
+  const SUPABASE_URL      = 'https://prahyvzevgnymeiitvsz.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByYWh5dnpldmdueW1laWl0dnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4OTI4MjIsImV4cCI6MjA5NjQ2ODgyMn0.wNOMZjaONO245EPeQd5k41ZluICxntA8zm-BhsQCTRA'; // substitua pela sua anon key real
+
+  // ✅ Nome diferente da variável evita conflito com o import
+  const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  /* ── Constants ── */
   const TYPE_COLORS = {
     entrega:  'var(--red)',
     prova:    'var(--amber)',
@@ -771,68 +262,43 @@
     aula:     'var(--accent-blue)',
     outro:    'var(--gray)'
   };
+  const MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  const WEEKDAYS_FULL = ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
 
-  const MONTHS = [
-    'Janeiro','Fevereiro','Março','Abril','Maio','Junho',
-    'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'
-  ];
+  /* ── State ── */
+  const today     = new Date();
+  const todayKey  = fmtKey(today.getFullYear(), today.getMonth(), today.getDate());
+  let curYear     = today.getFullYear();
+  let curMonth    = today.getMonth();
+  let selectedDay = null;
+  let isProf      = false;
+  let tasks       = {};
 
-  const WEEKDAYS_FULL = [
-    'domingo','segunda-feira','terça-feira','quarta-feira',
-    'quinta-feira','sexta-feira','sábado'
-  ];
-
-  const today      = new Date();
-  const todayKey   = fmtKey(today.getFullYear(), today.getMonth(), today.getDate());
-  let curYear      = today.getFullYear();
-  let curMonth     = today.getMonth();
-  let selectedDay  = null;
-  let isProf       = false;
-
-  /* ── Supabase Setup ──────────────────────────────────────────── */
-  // Cole aqui as chaves do seu projeto Supabase
-  const SUPABASE_URL = 'https://prahyvzevgnymeiitvsz.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_CA14gh1kRzoHWuINcl3k4w_E9hmt9W1';
-
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  // A variável tasks agora será preenchida com os dados do banco.
-  let tasks = {};
-
-  /* ── Helpers ─────────────────────────────────────────────────── */
+  /* ── Helpers ── */
   function fmtKey(y, m, d) {
-    return `${y}-${String(m + 1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
   }
 
-  function nextId() { return Date.now(); }
-
-  /* ── Data Fetching ───────────────────────────────────────────── */
+  /* ── Data ── */
   async function loadTasks() {
-    const { data, error } = await supabase.from('tasks').select('*');
-    if (error) {
-      console.error('Erro ao carregar atividades:', error);
-      return;
-    }
-    // Agrupa as atividades por data (date_key)
+    const { data, error } = await db.from('tasks').select('*');
+    if (error) { console.error('Erro ao carregar atividades:', error); return; }
     tasks = {};
     for (const task of (data || [])) {
-      const key = task.date_key;
-      if (!tasks[key]) {
-        tasks[key] = [];
-      }
-      tasks[key].push(task);
+      if (!tasks[task.date_key]) tasks[task.date_key] = [];
+      tasks[task.date_key].push(task);
     }
   }
 
-  /* ── Render Calendar ─────────────────────────────────────────── */
+  /* ── Calendar ── */
   function buildCalendar() {
     const grid  = document.getElementById('calGrid');
     const label = document.getElementById('monthLabel');
     grid.innerHTML = '';
     label.textContent = `${MONTHS[curMonth]} ${curYear}`;
 
-    const firstDay     = new Date(curYear, curMonth, 1).getDay();
-    const daysInMonth  = new Date(curYear, curMonth + 1, 0).getDate();
+    const firstDay    = new Date(curYear, curMonth, 1).getDay();
+    const daysInMonth = new Date(curYear, curMonth+1, 0).getDate();
 
     for (let i = 0; i < firstDay; i++) {
       const el = document.createElement('div');
@@ -844,49 +310,38 @@
       const key  = fmtKey(curYear, curMonth, d);
       const cell = document.createElement('div');
       cell.className = 'cal-day';
-
       if (key === todayKey) cell.classList.add('today');
-      if (selectedDay && selectedDay.key === key) cell.classList.add('selected');
-
+      if (selectedDay?.key === key) cell.classList.add('selected');
       const dayTasks = tasks[key] || [];
       if (dayTasks.length) cell.classList.add('has-tasks');
-
-      const dots = dayTasks.filter(t => t).slice(0, 6).map(t =>
+      const dots = dayTasks.slice(0,6).map(t =>
         `<div class="task-dot" style="background:${TYPE_COLORS[t.type] || TYPE_COLORS.outro}"></div>`
       ).join('');
-
       cell.innerHTML = `<span class="day-num">${d}</span><div class="task-dots">${dots}</div>`;
       cell.addEventListener('click', () => selectDay(curYear, curMonth, d));
       grid.appendChild(cell);
     }
   }
 
-  /* ── Select Day ──────────────────────────────────────────────── */
   function selectDay(y, m, d) {
     selectedDay = { y, m, d, key: fmtKey(y, m, d) };
     buildCalendar();
     renderPanel();
   }
 
-  /* ── Render Panel ────────────────────────────────────────────── */
   function renderPanel() {
     const panel = document.getElementById('dayPanel');
     if (!selectedDay) { panel.innerHTML = ''; return; }
-
     const { y, m, d, key } = selectedDay;
-    const dayName  = WEEKDAYS_FULL[new Date(y, m, d).getDay()];
+    const dayName  = WEEKDAYS_FULL[new Date(y,m,d).getDay()];
     const fullDate = `${d} de ${MONTHS[m]} de ${y}`;
     const dayTasks = tasks[key] || [];
 
     let tasksHtml;
-    if (dayTasks.length === 0) {
-      tasksHtml = `
-        <div class="empty-msg">
-          <i class="bi bi-calendar-x"></i>
-          Nenhuma atividade neste dia
-        </div>`;
+    if (!dayTasks.length) {
+      tasksHtml = `<div class="empty-msg"><i class="bi bi-calendar-x"></i>Nenhuma atividade neste dia</div>`;
     } else {
-      tasksHtml = `<div class="tasks-list">` + dayTasks.filter(t => t).map(t => `
+      tasksHtml = `<div class="tasks-list">` + dayTasks.map(t => `
         <div class="task-item">
           <div class="task-bar" style="background:${TYPE_COLORS[t.type] || TYPE_COLORS.outro}"></div>
           <div class="task-info">
@@ -897,45 +352,40 @@
               ${t.time ? `<span class="task-time"><i class="bi bi-clock" style="font-size:10px"></i> ${t.time}</span>` : ''}
             </div>
           </div>
-          ${isProf ? `<button class="delete-btn" onclick="deleteTask('${key}', ${t.id})" aria-label="Remover atividade"><i class="bi bi-trash"></i></button>` : ''}
-        </div>
-      `).join('') + `</div>`;
+          ${isProf ? `<button class="delete-btn" onclick="window._deleteTask('${key}',${t.id})"><i class="bi bi-trash"></i></button>` : ''}
+        </div>`).join('') + `</div>`;
     }
 
     const addBtnHtml = isProf
-      ? `<button class="add-btn" onclick="openModal()"><i class="bi bi-plus-lg"></i> Adicionar</button>`
+      ? `<button class="add-btn" onclick="window._openModal()"><i class="bi bi-plus-lg"></i> Adicionar</button>`
       : '';
 
     panel.innerHTML = `
       <div class="day-panel">
         <div class="panel-header">
           <div>
-            <div class="panel-date">${dayName.charAt(0).toUpperCase() + dayName.slice(1)}</div>
+            <div class="panel-date">${dayName.charAt(0).toUpperCase()+dayName.slice(1)}</div>
             <div class="panel-date-sub">${fullDate}</div>
           </div>
           ${addBtnHtml}
         </div>
         ${tasksHtml}
-      </div>
-    `;
+      </div>`;
   }
 
-  /* ── Modal ───────────────────────────────────────────────────── */
+  /* ── Modal ── */
   function openModal() {
-    document.getElementById('fSubject').value = '';
-    document.getElementById('fName').value    = '';
-    document.getElementById('fType').value    = 'entrega';
-    document.getElementById('fTime').value    = '';
-    ['fSubject','fName'].forEach(id => document.getElementById(id).classList.remove('error'));
+    ['fSubject','fName'].forEach(id => {
+      document.getElementById(id).value = '';
+      document.getElementById(id).classList.remove('error');
+    });
+    document.getElementById('fType').value = 'entrega';
+    document.getElementById('fTime').value = '';
     document.getElementById('modalOverlay').classList.add('open');
   }
 
-  function closeModal() { 
+  function closeModal() {
     document.getElementById('modalOverlay').classList.remove('open');
-  }
-
-  function handleOverlayClick(e) {
-    if (e.target === document.getElementById('modalOverlay')) closeModal();
   }
 
   async function saveTask() {
@@ -943,67 +393,37 @@
     const name    = document.getElementById('fName').value.trim();
     const type    = document.getElementById('fType').value;
     const time    = document.getElementById('fTime').value;
-
     let valid = true;
-    if (!subject) { document.getElementById('fSubject').classList.add('error'); valid = false; }
-    else document.getElementById('fSubject').classList.remove('error');
-    if (!name) { document.getElementById('fName').classList.add('error'); valid = false; }
-    else document.getElementById('fName').classList.remove('error');
-
+    document.getElementById('fSubject').classList.toggle('error', !subject); if (!subject) valid = false;
+    document.getElementById('fName').classList.toggle('error', !name);    if (!name)    valid = false;
     if (!valid) return;
 
     const key = selectedDay.key;
-    const newTask = {
-      subject,
-      name,
-      type,
-      time,
-      date_key: key
-    };
+    const { data, error } = await db.from('tasks').insert([{ subject, name, type, time, date_key: key }]).select();
+    if (error) { console.error('Erro ao salvar:', error); alert('Não foi possível salvar.'); return; }
 
-    const { data, error } = await supabase.from('tasks').insert([newTask]).select();
-
-    if (error) {
-      console.error('Erro ao salvar atividade:', error);
-      alert('Não foi possível salvar a atividade.');
-      return;
-    }
-
-    // Adiciona a nova atividade (com o ID do banco) ao estado local
-    const savedTask = (data && data.length > 0) ? data[0] : { ...newTask, id: Date.now() };
+    const saved = data?.[0] ?? { subject, name, type, time, date_key: key, id: Date.now() };
     if (!tasks[key]) tasks[key] = [];
-    tasks[key].push(savedTask);
-
+    tasks[key].push(saved);
     closeModal();
     buildCalendar();
     renderPanel();
   }
 
-  /* ── Delete & Role ───────────────────────────────────────────── */
   async function deleteTask(key, id) {
-    const { error } = await supabase.from('tasks').delete().match({ id: id });
-
-    if (error) {
-      console.error('Erro ao remover atividade:', error);
-      alert('Não foi possível remover a atividade.');
-      return;
-    }
-
+    const { error } = await db.from('tasks').delete().match({ id });
+    if (error) { console.error('Erro ao deletar:', error); alert('Não foi possível remover.'); return; }
     tasks[key] = (tasks[key] || []).filter(t => t.id !== id);
-    if (tasks[key].length === 0) delete tasks[key];
+    if (!tasks[key].length) delete tasks[key];
     buildCalendar();
     renderPanel();
   }
 
+  /* ── Role ── */
   function setRole(role) {
     if (role === 'prof' && !isProf) {
-      // ATENÇÃO: Este método de senha não é seguro! A senha fica visível no código.
-      // Para um projeto sério, considere um sistema de autenticação de verdade.
       const senha = prompt('Digite a senha para acessar o modo Editor:');
-      if (senha !== 'AndreyFofo03!') {
-        alert('Senha incorreta!');
-        return;
-      }
+      if (senha !== 'AndreyFofo03!') { alert('Senha incorreta!'); return; }
     }
     isProf = role === 'prof';
     document.getElementById('roleAluno').classList.toggle('active', !isProf);
@@ -1011,7 +431,7 @@
     renderPanel();
   }
 
-  /* ── Navigation ──────────────────────────────────────────────── */
+  /* ── Navigation ── */
   function changeMonth(dir) {
     curMonth += dir;
     if (curMonth > 11) { curMonth = 0; curYear++; }
@@ -1021,19 +441,23 @@
     renderPanel();
   }
 
-  /* ── Keyboard shortcut: Esc closes modal ─────────────────────── */
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModal();
-  });
+  /* ── Expose to global scope (needed for onclick in dynamic HTML) ── */
+  window._openModal   = openModal;
+  window._deleteTask  = deleteTask;
+  window.closeModal   = closeModal;
+  window.saveTask     = saveTask;
+  window.setRole      = setRole;
+  window.changeMonth  = changeMonth;
+  window.handleOverlayClick = (e) => {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  };
 
-  /* ── Init Application ────────────────────────────────────────── */
-  async function init() {
-    await loadTasks();
-    buildCalendar();
-    selectDay(today.getFullYear(), today.getMonth(), today.getDate());
-  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  init();
+  /* ── Init ── */
+  await loadTasks();
+  buildCalendar();
+  selectDay(today.getFullYear(), today.getMonth(), today.getDate());
 </script>
 </body>
 </html>
