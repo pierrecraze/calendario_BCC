@@ -660,6 +660,7 @@
     }
   </style>
 </head>
+
 <body>
 
 <div class="app-wrapper">
@@ -759,6 +760,8 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
   /* ── State ───────────────────────────────────────────────────── */
   const TYPE_COLORS = {
@@ -786,18 +789,15 @@
   let selectedDay  = null;
   let isProf       = false;
 
-  /* ── Sample data ─────────────────────────────────────────────── */
-  let tasks = {};
-  tasks[todayKey] = [
-    { subject: 'Redes de Computadores', name: 'EP2 — Sockets TCP', type: 'entrega', time: '23:59', id: 1 }
-  ];
+  /* ── Supabase Setup ──────────────────────────────────────────── */
+  // Cole aqui as chaves do seu projeto Supabase
+  const SUPABASE_URL = 'https://prahyvzevgnymeiitvsz.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_CA14gh1kRzoHWuINcl3k4w_E9hmt9W1';
 
-  const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 10);
-  const nmKey = fmtKey(nextMonth.getFullYear(), nextMonth.getMonth(), nextMonth.getDate());
-  tasks[nmKey] = [
-    { subject: 'Sistemas Operacionais', name: 'Prova P2', type: 'prova', time: '19:00', id: 2 },
-    { subject: 'Banco de Dados', name: 'Entrega do modelo relacional', type: 'trabalho', time: '', id: 3 }
-  ];
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // A variável tasks agora será preenchida com os dados do banco.
+  let tasks = {};
 
   /* ── Helpers ─────────────────────────────────────────────────── */
   function fmtKey(y, m, d) {
@@ -805,6 +805,24 @@
   }
 
   function nextId() { return Date.now(); }
+
+  /* ── Data Fetching ───────────────────────────────────────────── */
+  async function loadTasks() {
+    const { data, error } = await supabase.from('tasks').select('*');
+    if (error) {
+      console.error('Erro ao carregar atividades:', error);
+      return;
+    }
+    // Agrupa as atividades por data (date_key)
+    tasks = {};
+    for (const task of data) {
+      const key = task.date_key;
+      if (!tasks[key]) {
+        tasks[key] = [];
+      }
+      tasks[key].push(task);
+    }
+  }
 
   /* ── Render Calendar ─────────────────────────────────────────── */
   function buildCalendar() {
@@ -912,7 +930,7 @@
     document.getElementById('modalOverlay').classList.add('open');
   }
 
-  function closeModal() {
+  function closeModal() { 
     document.getElementById('modalOverlay').classList.remove('open');
   }
 
@@ -920,7 +938,7 @@
     if (e.target === document.getElementById('modalOverlay')) closeModal();
   }
 
-  function saveTask() {
+  async function saveTask() {
     const subject = document.getElementById('fSubject').value.trim();
     const name    = document.getElementById('fName').value.trim();
     const type    = document.getElementById('fType').value;
@@ -935,25 +953,51 @@
     if (!valid) return;
 
     const key = selectedDay.key;
+    const newTask = {
+      subject,
+      name,
+      type,
+      time,
+      date_key: key
+    };
+
+    const { data, error } = await supabase.from('tasks').insert([newTask]).select();
+
+    if (error) {
+      console.error('Erro ao salvar atividade:', error);
+      alert('Não foi possível salvar a atividade.');
+      return;
+    }
+
+    // Adiciona a nova atividade (com o ID do banco) ao estado local
     if (!tasks[key]) tasks[key] = [];
-    tasks[key].push({ subject, name, type, time, id: nextId() });
+    tasks[key].push(data[0]);
 
     closeModal();
     buildCalendar();
     renderPanel();
   }
 
-  /* ── Delete Task ─────────────────────────────────────────────── */
-  function deleteTask(key, id) {
+  /* ── Delete & Role ───────────────────────────────────────────── */
+  async function deleteTask(key, id) {
+    const { error } = await supabase.from('tasks').delete().match({ id: id });
+
+    if (error) {
+      console.error('Erro ao remover atividade:', error);
+      alert('Não foi possível remover a atividade.');
+      return;
+    }
+
     tasks[key] = (tasks[key] || []).filter(t => t.id !== id);
     if (tasks[key].length === 0) delete tasks[key];
     buildCalendar();
     renderPanel();
   }
 
-  /* ── Role ────────────────────────────────────────────────────── */
   function setRole(role) {
     if (role === 'prof' && !isProf) {
+      // ATENÇÃO: Este método de senha não é seguro! A senha fica visível no código.
+      // Para um projeto sério, considere um sistema de autenticação de verdade.
       const senha = prompt('Digite a senha para acessar o modo Editor:');
       if (senha !== 'AndreyFofo03!') {
         alert('Senha incorreta!');
@@ -981,9 +1025,14 @@
     if (e.key === 'Escape') closeModal();
   });
 
-  /* ── Init ────────────────────────────────────────────────────── */
-  buildCalendar();
-  selectDay(today.getFullYear(), today.getMonth(), today.getDate());
+  /* ── Init Application ────────────────────────────────────────── */
+  async function init() {
+    await loadTasks();
+    buildCalendar();
+    selectDay(today.getFullYear(), today.getMonth(), today.getDate());
+  }
+
+  init();
 </script>
 </body>
 </html>
