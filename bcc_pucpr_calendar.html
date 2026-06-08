@@ -1,0 +1,664 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .cal-root {
+    font-family: 'Syne', sans-serif;
+    background: var(--color-background-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem;
+    min-height: 480px;
+  }
+
+  .cal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .cal-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .cal-month-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cal-month-label {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    min-width: 140px;
+    text-align: center;
+  }
+
+  .nav-btn {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-primary);
+    font-size: 15px;
+    transition: background 0.15s;
+  }
+  .nav-btn:hover { background: var(--color-background-secondary); }
+
+  .role-toggle {
+    display: flex;
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+  }
+
+  .role-btn {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border: none;
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .role-btn.active {
+    background: var(--color-background-info);
+    color: var(--color-text-info);
+  }
+
+  .cal-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+    margin-bottom: 3px;
+  }
+
+  .weekday {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-text-tertiary);
+    text-align: center;
+    padding: 4px 0;
+    letter-spacing: 0.05em;
+  }
+
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+  }
+
+  .cal-day {
+    min-height: 58px;
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 5px 6px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .cal-day:hover { border-color: var(--color-border-primary); }
+  .cal-day.empty {
+    background: transparent;
+    border-color: transparent;
+    cursor: default;
+  }
+  .cal-day.today {
+    border-color: #378ADD;
+    background: var(--color-background-info);
+  }
+  .cal-day.selected {
+    border-color: #185FA5;
+    background: var(--color-background-info);
+  }
+  .cal-day.has-tasks { border-color: var(--color-border-secondary); }
+
+  .day-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .cal-day.today .day-num { color: var(--color-text-info); font-weight: 700; }
+  .cal-day.selected .day-num { color: var(--color-text-info); }
+
+  .task-dots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+
+  .task-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .panel {
+    margin-top: 1rem;
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: 1rem 1.25rem;
+    animation: slideUp 0.18s ease;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .panel-date {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+
+  .add-btn {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-info);
+    background: var(--color-background-info);
+    border: 0.5px solid var(--color-border-info);
+    border-radius: var(--border-radius-md);
+    padding: 4px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: opacity 0.15s;
+  }
+  .add-btn:hover { opacity: 0.8; }
+
+  .tasks-list { display: flex; flex-direction: column; gap: 6px; }
+
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-tertiary);
+    background: var(--color-background-secondary);
+  }
+
+  .task-color-bar {
+    width: 3px;
+    min-height: 36px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .task-info { flex: 1; }
+
+  .task-subject {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-bottom: 2px;
+  }
+
+  .task-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 2px;
+  }
+
+  .task-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .task-type-badge {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  .type-entrega { background: #FCEBEB; color: #A32D2D; }
+  .type-prova { background: #FAEEDA; color: #854F0B; }
+  .type-trabalho { background: #E1F5EE; color: #0F6E56; }
+  .type-aula { background: #E6F1FB; color: #185FA5; }
+  .type-outro { background: var(--color-background-secondary); color: var(--color-text-secondary); }
+
+  .empty-day-msg {
+    font-size: 13px;
+    color: var(--color-text-tertiary);
+    text-align: center;
+    padding: 1rem 0;
+  }
+
+  .form-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: fadeIn 0.15s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .form-card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem;
+    width: 340px;
+    max-width: 95vw;
+  }
+
+  .form-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 1rem;
+  }
+
+  .form-group { margin-bottom: 10px; }
+  .form-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    display: block;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .form-input, .form-select {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    width: 100%;
+    padding: 7px 10px;
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    background: var(--color-background-secondary);
+    color: var(--color-text-primary);
+  }
+  .form-input:focus, .form-select:focus { outline: none; border-color: #378ADD; }
+
+  .form-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 1rem;
+  }
+
+  .btn-primary {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    flex: 1;
+    padding: 8px;
+    background: #185FA5;
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+
+  .btn-cancel {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    flex: 1;
+    padding: 8px;
+    background: transparent;
+    color: var(--color-text-secondary);
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 0.5px solid var(--color-border-tertiary);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    color: var(--color-text-secondary);
+  }
+
+  .legend-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+
+  .delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-tertiary);
+    font-size: 14px;
+    padding: 2px;
+    border-radius: 4px;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    transition: color 0.15s;
+  }
+  .delete-btn:hover { color: #E24B4A; }
+</style>
+
+<h2 class="sr-only">Calendário da Turma BCC — PUCPR. Clique em um dia para ver atividades, ou adicione entregas como professor.</h2>
+
+<div class="cal-root" id="calRoot">
+
+  <div class="cal-header">
+    <div>
+      <div class="cal-title">BCC — PUCPR</div>
+    </div>
+    <div class="cal-month-nav">
+      <button class="nav-btn" id="prevBtn" aria-label="Mês anterior"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
+      <div class="cal-month-label" id="monthLabel"></div>
+      <button class="nav-btn" id="nextBtn" aria-label="Próximo mês"><i class="ti ti-chevron-right" aria-hidden="true"></i></button>
+    </div>
+    <div class="role-toggle">
+      <button class="role-btn active" id="roleAluno">Aluno</button>
+      <button class="role-btn" id="roleProf">Professor</button>
+    </div>
+  </div>
+
+  <div class="cal-weekdays">
+    <div class="weekday">DOM</div>
+    <div class="weekday">SEG</div>
+    <div class="weekday">TER</div>
+    <div class="weekday">QUA</div>
+    <div class="weekday">QUI</div>
+    <div class="weekday">SEX</div>
+    <div class="weekday">SAB</div>
+  </div>
+
+  <div class="cal-grid" id="calGrid"></div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#E24B4A"></div>entrega</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#EF9F27"></div>prova</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1D9E75"></div>trabalho</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#378ADD"></div>aula esp.</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#888780"></div>outro</div>
+  </div>
+
+  <div id="dayPanel"></div>
+</div>
+
+<div id="formOverlay" style="display:none" class="form-overlay">
+  <div class="form-card">
+    <div class="form-title"><i class="ti ti-calendar-plus" aria-hidden="true"></i> Adicionar atividade</div>
+    <div class="form-group">
+      <label class="form-label">Disciplina</label>
+      <input class="form-input" id="fSubject" placeholder="ex: Cálculo II, SO, Redes..." />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Título</label>
+      <input class="form-input" id="fName" placeholder="ex: Prova P2, EP3..." />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tipo</label>
+      <select class="form-select" id="fType">
+        <option value="entrega">Entrega</option>
+        <option value="prova">Prova</option>
+        <option value="trabalho">Trabalho</option>
+        <option value="aula">Aula especial</option>
+        <option value="outro">Outro</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Hora (opcional)</label>
+      <input class="form-input" id="fTime" type="time" />
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" id="cancelForm">Cancelar</button>
+      <button class="btn-primary" id="saveForm">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const TYPE_COLORS = {
+  entrega: '#E24B4A',
+  prova: '#EF9F27',
+  trabalho: '#1D9E75',
+  aula: '#378ADD',
+  outro: '#888780'
+};
+
+const MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const WEEKDAYS_FULL = ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
+
+let today = new Date();
+let curYear = today.getFullYear();
+let curMonth = today.getMonth();
+let selectedDay = null;
+let isProf = false;
+
+let tasks = {
+  [`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`]: [
+    { subject: 'Redes de Computadores', name: 'EP2 — Sockets TCP', type: 'entrega', time: '23:59', id: 1 },
+  ],
+};
+
+function nextId() {
+  return Date.now();
+}
+
+const todayKey = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+
+function dateKey(y, m, d) {
+  return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+}
+
+function buildCalendar() {
+  const grid = document.getElementById('calGrid');
+  const label = document.getElementById('monthLabel');
+  grid.innerHTML = '';
+  label.textContent = `${MONTHS[curMonth]} ${curYear}`;
+
+  const firstDay = new Date(curYear, curMonth, 1).getDay();
+  const daysInMonth = new Date(curYear, curMonth+1, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'cal-day empty';
+    grid.appendChild(empty);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const key = dateKey(curYear, curMonth, d);
+    const cell = document.createElement('div');
+    cell.className = 'cal-day';
+    if (key === todayKey) cell.classList.add('today');
+    if (selectedDay && selectedDay.key === key) cell.classList.add('selected');
+
+    const dayTasks = tasks[key] || [];
+    if (dayTasks.length) cell.classList.add('has-tasks');
+
+    cell.innerHTML = `<span class="day-num">${d}</span><div class="task-dots">${
+      dayTasks.slice(0,5).map(t => `<div class="task-dot" style="background:${TYPE_COLORS[t.type] || TYPE_COLORS.outro}"></div>`).join('')
+    }</div>`;
+
+    cell.addEventListener('click', () => selectDay(curYear, curMonth, d));
+    grid.appendChild(cell);
+  }
+}
+
+function selectDay(y, m, d) {
+  const key = dateKey(y, m, d);
+  selectedDay = { y, m, d, key };
+  buildCalendar();
+  renderPanel();
+}
+
+function renderPanel() {
+  const panel = document.getElementById('dayPanel');
+  if (!selectedDay) { panel.innerHTML = ''; return; }
+
+  const { y, m, d, key } = selectedDay;
+  const dayName = WEEKDAYS_FULL[new Date(y, m, d).getDay()];
+  const label = `${dayName}, ${d} de ${MONTHS[m]} de ${y}`;
+  const dayTasks = tasks[key] || [];
+
+  let tasksHtml = '';
+  if (dayTasks.length === 0) {
+    tasksHtml = `<div class="empty-day-msg"><i class="ti ti-calendar-off" aria-hidden="true"></i> Nenhuma atividade neste dia</div>`;
+  } else {
+    tasksHtml = `<div class="tasks-list">${dayTasks.map(t => `
+      <div class="task-item">
+        <div class="task-color-bar" style="background:${TYPE_COLORS[t.type] || TYPE_COLORS.outro}"></div>
+        <div class="task-info">
+          <div class="task-subject">${t.subject}</div>
+          <div class="task-name">${t.name}</div>
+          <div class="task-meta">
+            <span class="task-type-badge type-${t.type}">${t.type}</span>
+            ${t.time ? `<i class="ti ti-clock" aria-hidden="true"></i>${t.time}` : ''}
+          </div>
+        </div>
+        ${isProf ? `<button class="delete-btn" onclick="deleteTask('${key}', ${t.id})" aria-label="Remover"><i class="ti ti-trash" aria-hidden="true"></i></button>` : ''}
+      </div>
+    `).join('')}</div>`;
+  }
+
+  const addBtnHtml = isProf
+    ? `<button class="add-btn" id="openFormBtn"><i class="ti ti-plus" aria-hidden="true"></i> Adicionar</button>`
+    : '';
+
+  panel.innerHTML = `
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-date">${label}</div>
+        ${addBtnHtml}
+      </div>
+      ${tasksHtml}
+    </div>
+  `;
+
+  if (isProf) {
+    document.getElementById('openFormBtn')?.addEventListener('click', openForm);
+  }
+}
+
+function openForm() {
+  document.getElementById('fSubject').value = '';
+  document.getElementById('fName').value = '';
+  document.getElementById('fType').value = 'entrega';
+  document.getElementById('fTime').value = '';
+  document.getElementById('formOverlay').style.display = 'flex';
+}
+
+function closeForm() {
+  document.getElementById('formOverlay').style.display = 'none';
+}
+
+function saveForm() {
+  const subject = document.getElementById('fSubject').value.trim();
+  const name = document.getElementById('fName').value.trim();
+  const type = document.getElementById('fType').value;
+  const time = document.getElementById('fTime').value;
+
+  if (!subject || !name) {
+    document.getElementById('fSubject').style.borderColor = subject ? '' : '#E24B4A';
+    document.getElementById('fName').style.borderColor = name ? '' : '#E24B4A';
+    return;
+  }
+
+  const key = selectedDay.key;
+  if (!tasks[key]) tasks[key] = [];
+  tasks[key].push({ subject, name, type, time, id: nextId() });
+  closeForm();
+  buildCalendar();
+  renderPanel();
+}
+
+function deleteTask(key, id) {
+  tasks[key] = (tasks[key] || []).filter(t => t.id !== id);
+  if (tasks[key].length === 0) delete tasks[key];
+  buildCalendar();
+  renderPanel();
+}
+
+document.getElementById('prevBtn').addEventListener('click', () => {
+  curMonth--;
+  if (curMonth < 0) { curMonth = 11; curYear--; }
+  selectedDay = null;
+  buildCalendar();
+  renderPanel();
+});
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+  curMonth++;
+  if (curMonth > 11) { curMonth = 0; curYear++; }
+  selectedDay = null;
+  buildCalendar();
+  renderPanel();
+});
+
+document.getElementById('roleAluno').addEventListener('click', () => {
+  isProf = false;
+  document.getElementById('roleAluno').classList.add('active');
+  document.getElementById('roleProf').classList.remove('active');
+  renderPanel();
+});
+
+document.getElementById('roleProf').addEventListener('click', () => {
+  isProf = true;
+  document.getElementById('roleProf').classList.add('active');
+  document.getElementById('roleAluno').classList.remove('active');
+  renderPanel();
+});
+
+document.getElementById('cancelForm').addEventListener('click', closeForm);
+document.getElementById('saveForm').addEventListener('click', saveForm);
+
+document.getElementById('formOverlay').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('formOverlay')) closeForm();
+});
+
+buildCalendar();
+selectDay(today.getFullYear(), today.getMonth(), today.getDate());
+</script>
